@@ -1,0 +1,6 @@
+@OffersHub_HostAddress = http://localhost:5216
+
+GET {{OffersHub_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

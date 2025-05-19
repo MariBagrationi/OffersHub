@@ -1,0 +1,63 @@
+﻿@using OffersHub.Application.Models.Offers;
+@model IEnumerable<OfferResponseModel>
+
+@{
+    ViewData["Title"] = "Your Cart";
+}
+
+<h2>Your Cart</h2>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Category</th>
+                <th>Company</th>
+                <th>Offer Due Date</th>
+                <th>Total</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var offer in Model)
+            {
+                <tr>
+                    <td>@offer.Title</td>
+                    <td>@offer.Description</td>
+                    <td>@offer.Price.ToString("C")</td>
+                    <td>@offer.Quantity</td>
+                    <td>@offer.CategoryName</td>
+                    <td>@offer.CompanyName</td>
+                    <td>@offer.OfferDueDate.ToString("d")</td>
+                    <td>@(offer.Price * offer.Quantity).ToString("C")</td>
+                    <td>
+                        <form method="post" asp-controller="Purchase" asp-action="RemoveFromCart" asp-route-productId="@offer.Id">
+                            <button type="submit" class="btn btn-danger">Remove</button>
+                        </form>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="cart-summary">
+        <h4>Total: @Model.Sum(o => o.Price * o.Quantity).ToString("C")</h4>
+
+        <form asp-controller="Purchase" asp-action="BuyCart" method="post">
+            <button type="submit" class="btn btn-primary">Proceed to Checkout</button>
+        </form>
+    </div>
+
+}
+else
+{
+    <p>Your cart is empty.</p>
+}
+
+

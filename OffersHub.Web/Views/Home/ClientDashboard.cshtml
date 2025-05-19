@@ -1,0 +1,31 @@
+﻿@model OffersHub.Application.Models.Clients.ClientServiceModel
+@{
+    ViewData["Title"] = "Client Dashboard";
+}
+
+<div class="container mt-5">
+    <div class="text-center">
+        <!-- Profile Image -->
+        <div class="mb-4">
+            <img src="@Url.Content(Model.ImageUrl ?? "~/images/default-profile.jpg")"
+                 alt="Profile Image"
+                 class="rounded-circle shadow"
+                 style="width: 180px; height: 180px; object-fit: cover; border: 4px solid #17a2b8;" />
+        </div>
+
+        <h1 class="display-4 text-info fw-bold">Welcome, @Model.Name! 🛍️</h1>
+        <p class="lead">Browse and manage your favorite offers and purchases.</p>
+
+        <hr class="my-4" />
+
+        <div class="d-flex flex-wrap justify-content-center gap-4">
+            <a asp-controller="Offer" asp-action="GetAll" class="btn btn-info btn-lg">Browse All Offers</a>
+            <a asp-controller="Purchase" asp-action="MyOrders" class="btn btn-outline-info btn-lg">My Orders</a>
+            <a asp-controller="Purchase" asp-action="GoToCart" class="btn btn-success btn-lg">Go to Cart 🛒</a>
+            <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                <button type="submit" class="btn btn-danger btn-lg">Log Out 🔓</button>
+            </form>
+        </div>
+    </div>
+</div>
+

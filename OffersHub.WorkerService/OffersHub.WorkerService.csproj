@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-OffersHub.WorkerService-86170729-00eb-414d-bc58-4cadf43710b7</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OffersHub.Application\OffersHub.Application.csproj" />
+    <ProjectReference Include="..\OffersHub.Infrastructure\OffersHub.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>

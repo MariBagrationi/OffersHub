@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Company Dashboard";
+}
+
+<div class="container mt-5">
+    <div class="text-center">
+        <h1 class="display-4 text-success fw-bold">Welcome, Company 🌟</h1>
+        <p class="lead">Manage your offers, company profile, and track client interest.</p>
+
+        <hr class="my-4" />
+
+        <div class="d-flex flex-wrap justify-content-center gap-4">
+            <a asp-controller="Offer" asp-action="Createoffer" class="btn btn-success btn-lg">Add New Offer</a>
+            <a asp-controller="Offer" asp-action="GetMyOffers" asp-route-companyId="@ViewBag.CompanyId" class="btn btn-outline-success btn-lg">My Offers</a>
+            <a asp-controller="Company" asp-action="Edit" asp-route-username="@User.Identity!.Name" class="btn btn-outline-dark btn-lg">Edit Company Info</a>
+        </div>
+    </div>
+</div>

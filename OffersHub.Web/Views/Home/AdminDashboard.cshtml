@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container mt-5">
+    <div class="text-center">
+        <!-- Admin Profile Image -->
+        <div class="mb-4">
+            <img src="@Url.Content("~/images/default-admin.jpg")"
+                 alt="Admin Profile"
+                 class="rounded-circle shadow"
+                 style="width: 180px; height: 180px; object-fit: cover; border: 4px solid #007bff;" />
+        </div>
+
+        <h1 class="display-4 text-primary fw-bold">Welcome Administrator 👑</h1>
+        <p class="lead">Manage users, categories, and control the entire OffersHub platform.</p>
+
+        <hr class="my-4" />
+
+        <div class="d-flex flex-wrap justify-content-center gap-4">
+            <a asp-controller="Category" asp-action="GetAll" class="btn btn-outline-dark btn-lg">Manage Categories</a>
+            <a asp-controller="Company" asp-action="GetAll" class="btn btn-outline-success btn-lg">View All Companies</a>
+            <a asp-controller="Client" asp-action="GetAll" class="btn btn-outline-secondary btn-lg">View All Clients</a>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OffersHub.Application\OffersHub.Application.csproj" />
+    <ProjectReference Include="..\OffersHub.Domain\OffersHub.Domain.csproj" />
+    <ProjectReference Include="..\OffersHub.Persistance\OffersHub.Persistance.csproj" />
+  </ItemGroup>
+
+</Project>

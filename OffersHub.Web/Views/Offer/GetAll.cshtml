@@ -1,0 +1,68 @@
+﻿@model IEnumerable<OffersHub.Application.Models.Offers.OfferResponseModel>
+
+@{
+    int? addedOfferId = TempData["AddedOfferId"] as int?;
+}
+
+<h2>All Offers</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Offer Ends</th>
+            <th>Quantity</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var offer in Model)
+        {
+            <tr>
+                <td>@offer.Title</td>
+                <td>@offer.Description</td>
+                <td>@offer.Price ₾</td>
+                <td>@offer.OfferDueDate</td>
+                <td>@offer.Quantity</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@offer.Id">View</a> 
+                    
+                    @if (User.IsInRole("Company"))
+                    {
+                        <a asp-action="EditOffer" asp-route-id="@offer.Id">Edit</a>
+                        <a asp-action = "DeleteOffer" asp-route-id = "@offer.Id" > Delete </a>
+                    }
+                    
+                    
+                    @if (User.IsInRole("Client"))
+                    {
+                        if (addedOfferId == offer.Id)
+                        {
+                            <span class="btn btn-sm btn-secondary disabled">Added</span>
+                        }
+                        else
+                        {
+                            <form asp-controller="Purchase"
+                                  asp-action="AddToCart"
+                                  asp-route-offerId="@offer.Id"
+                                  method="post"
+                                  class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-sm btn-success">Add to Cart</button>
+                            </form>
+                        }
+                    }
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (User.IsInRole("Company"))
+{
+    <a class="btn btn-primary" asp-controller="Offer" asp-action="CreateOffer">Create New Offer</a>
+}
+

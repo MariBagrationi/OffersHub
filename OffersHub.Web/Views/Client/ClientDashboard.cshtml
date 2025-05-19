@@ -1,0 +1,120 @@
+﻿@{
+    ViewData["Title"] = "Client Dashboard";
+ }
+
+<style>
+    .dashboard-container {
+        position: relative;
+        min-height: 100vh;
+        padding-bottom: 100px; /* space for cart button */
+    }
+
+    .client-image {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        z-index: 1000;
+    }
+
+    .client-image img {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 5px solid #ffffffcc;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        background: linear-gradient(145deg, #f9f9f9, #dcdcdc);
+    }
+
+    .cart-button {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        z-index: 1000;
+    }
+
+    .cart-button .btn {
+        font-size: 1.3rem;
+        padding: 12px 24px;
+        background: linear-gradient(45deg, #ffde59, #c6ffdd, #d0f4ff);
+        border: none;
+        color: #333;
+        font-weight: bold;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+        border-radius: 12px;
+        transition: transform 0.2s ease;
+    }
+
+    .cart-button .btn:hover {
+        transform: scale(1.05);
+    }
+
+    .dashboard-actions .btn {
+        font-size: 1.2rem;
+        padding: 12px 28px;
+        border-radius: 10px;
+        font-weight: bold;
+        border: none;
+        transition: 0.3s ease;
+    }
+
+    .btn-browse {
+        background: linear-gradient(to right, #c6ffdd, #fbd786, #f7797d);
+        color: #000;
+    }
+
+    .btn-edit {
+        background: linear-gradient(to right, #a1c4fd, #c2e9fb);
+        color: #000;
+    }
+
+    .btn-update {
+        background: linear-gradient(to right, #89f7fe, #66a6ff);
+        color: #000;
+    }
+
+    .btn-logout {
+        background: linear-gradient(to right, #fceabb, #f8b500);
+        color: #000;
+    }
+
+    .dashboard-title {
+        color: #66a6ff;
+        font-weight: bold;
+        font-size: 2.5rem;
+    }
+
+    .dashboard-subtitle {
+        color: #555;
+    }
+</style>
+
+<div class="dashboard-container container mt-5 text-center">
+
+    @if (Model?.ImageUrl != null)
+    {
+        <div class="client-image">
+            <img src="~/images/@Model.ImageUrl" alt="Client Image" />
+        </div>
+    }
+
+    <h1 class="dashboard-title">Welcome, Client 🛍️</h1>
+    <p class="lead dashboard-subtitle">Browse and manage your favorite offers and purchases.</p>
+
+    <hr class="my-4" />
+
+    <div class="dashboard-actions d-flex flex-wrap justify-content-center gap-4 mt-4">
+        <a asp-controller="Offer" asp-action="GetAll" class="btn btn-browse">Browse All Offers</a>
+        <a asp-controller="Client" asp-action="FillBalance" class="btn btn-edit">Fill Balance</a>
+        <a asp-controller="Client" asp-action="UpdateClient" asp-route-id="@Model?.Id" class="btn btn-update">Update Profile</a>
+        <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+            <button type="submit" class="btn btn-logout">Log Out</button>
+        </form>
+    </div>
+</div>
+
+<div class="cart-button">
+    <a asp-controller="Purchase" asp-action="GetCart" class="btn">
+        🛒 My Cart
+    </a>
+</div>

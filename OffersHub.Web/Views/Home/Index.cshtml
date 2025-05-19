@@ -1,0 +1,176 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@inject OffersHub.Application.Services.Clients.IClientService ClienttService
+@inject OffersHub.Application.Services.Companies.ICompanyService CompanyService
+
+<div class="container text-center mt-5">
+
+    <h1 class="display-3 fw-bold mb-3 text-fancy-black">Welcome to OffersHub</h1>
+    <p class="lead fs-4 text-muted fst-italic">Your destination for deals, discounts & happy shopping 🛍️</p>
+
+    <hr class="my-5" style="border-top: 2px solid #333;" />
+
+    <!-- Offers & Companies -->
+    <div class="mt-4">
+        <h2 class="mb-3 fw-semibold">Discover the Deals</h2>
+        <p class="text-secondary">Browse our latest offers or connect with trusted companies.</p>
+
+        @if (User.Identity!.IsAuthenticated)
+        {
+            <div class="d-flex justify-content-end">
+                @{
+                    string profileUrl = "#";
+                    string profileText = "Back to Profile";
+
+                    if (User.IsInRole("Admin"))
+                    {
+                        profileUrl = Url.Action("AdminDashboard", "Home")!;
+                    }
+                    else if (User.IsInRole("Client"))
+                    {
+                        var client = await ClienttService.GetByUserName(User.Identity.Name!, CancellationToken.None);
+                        if(client != null)
+                        {
+                            profileUrl = Url.Action("ClientDashboard", "Home", new {Id = client.Id})!;
+                        }
+                    }
+                    else if (User.IsInRole("Company"))
+                    {
+                        var company = await CompanyService.GetByUserName(User.Identity.Name!, CancellationToken.None);
+
+                        if (company != null)
+                        {
+                            profileUrl = Url.Action("CompanyDashboard", "Home", new { id = company.Id })!;
+                        }
+                    }
+                    
+                }
+
+                <a href="@profileUrl" class="btn btn-back-to-profile shadow-lg me-2">
+                    🚀 @profileText
+                </a>
+            </div>
+        }
+
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+            @if (User.Identity!.IsAuthenticated)
+            {
+                <!-- Buttons visible to all authenticated users -->
+                <a class="btn btn-offers px-4 py-2" asp-controller="Offer" asp-action="GetAll">View All Offers</a>
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <a class="btn btn-warning px-4 py-2" asp-controller="Category" asp-action="GetAll">View All Categories</a>
+                    <a class="btn btn-primary px-4 py-2" asp-controller="Client" asp-action="GetAll">View All Clients</a>
+                    <a class="btn btn-companies px-4 py-2" asp-controller="Company" asp-action="GetAll">View All Companies</a>
+                }
+                else if (User.IsInRole("Company"))
+                {
+                    <a class="btn btn-success px-4 py-2" asp-controller="Offer" asp-action="Create">Create Offer</a>
+                    <a class="btn btn-outline-primary px-4 py-2" asp-controller="Category" asp-action="GetAll">View Categories</a>
+                }
+                else if (User.IsInRole("Client"))
+                {
+                    <a class="btn btn-outline-primary px-4 py-2" asp-controller="Category" asp-action="GetAll">View Categories</a>
+                    <a class="btn btn-outline-info px-4 py-2" asp-controller="Client" asp-action="FillBalance">Fill Balance</a>
+                }
+
+                <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-danger px-4 py-2">Log Out</button>
+                </form>
+            }
+            else
+            {
+                <!-- Guest user buttons -->
+                <a class="btn btn-outline-secondary px-4 py-2" asp-controller="Offer" asp-action="GetAll">Explore Offers</a>
+            }
+        </div>
+    </div>
+
+    <hr class="my-5" style="border-top: 2px dashed #444;" />
+
+    <!-- Login / Sign Up Section -->
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <div class="mt-5">
+            <h3 class="mb-4 fw-semibold">Be Part of the Experience</h3>
+
+            <div class="d-flex justify-content-center gap-4 flex-wrap">
+                <div class="card border-0 shadow p-4 bg-light" style="width: 20rem;">
+                    <h5 class="card-title mb-2 fw-bold">Welcome Back</h5>
+                    <p class="card-text text-muted">Log in to continue your shopping journey.</p>
+                    <a asp-controller="Account" asp-action="Login" class="btn btn-offers w-100">Log In</a>
+                </div>
+
+                <div class="card border-0 shadow p-4 bg-light" style="width: 20rem;">
+                    <h5 class="card-title mb-2 fw-bold">First Time Here?</h5>
+                    <p class="card-text text-muted">Join now and discover handpicked offers made for you.</p>
+                    <a asp-controller="Account" asp-action="Register" class="btn btn-companies w-100">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    }
+
+    <hr class="my-5" style="border-top: 1px solid #222;" />
+
+    <footer class="text-muted mt-4">
+        <p class="mb-0">🖤 Happy Shopping 🖤</p>
+        <small>&copy; @DateTime.Now.Year OffersHub</small>
+    </footer>
+</div>
+
+<style>
+    .btn-back-to-profile {
+        background: linear-gradient(135deg, #111 0%, #444 100%);
+        color: #fff;
+        font-weight: 600;
+        text-transform: uppercase;
+        border: none;
+        border-radius: 30px;
+        padding: 0.75rem 1.5rem;
+        transition: all 0.3s ease-in-out;
+        letter-spacing: 1px;
+    }
+
+        .btn-back-to-profile:hover {
+            background: linear-gradient(135deg, #222 0%, #666 100%);
+            transform: scale(1.05);
+            color: #00ffe1;
+            box-shadow: 0 0 12px #00ffe1;
+        }
+
+    .text-fancy-black {
+        font-weight: 800;
+        letter-spacing: 1px;
+        color: #111;
+        text-transform: uppercase;
+    }
+
+    .logo-img {
+        height: 100px;
+        object-fit: contain;
+    }
+
+    .btn-offers {
+        background-color: #5bc0de;
+        color: white;
+        border: none;
+    }
+
+        .btn-offers:hover {
+            background-color: #31b0d5;
+            color: white;
+        }
+
+    .btn-companies {
+        background-color: #5cb85c;
+        color: white;
+        border: none;
+    }
+
+        .btn-companies:hover {
+            background-color: #449d44;
+            color: white;
+        }
+</style>

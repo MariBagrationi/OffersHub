@@ -1,0 +1,33 @@
+﻿@using OffersHub.Application.Models.Clients;
+@model IEnumerable<ClientServiceModel>;
+
+@{
+    ViewData["Title"] = "Client List";
+}
+
+<h2>Client List</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var client in Model)
+        {
+            <tr>
+                <td>@client.UserName</td>
+                <td>
+                    <form method="post" action="@Url.Action("Delete", "Client", new { id = client.Id })" style="display:inline;">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this client?');">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="@Url.Action("CreateClient", "Client")" class="btn btn-success">Create New Client</a>
