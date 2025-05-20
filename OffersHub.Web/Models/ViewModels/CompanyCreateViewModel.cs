@@ -19,5 +19,4 @@ namespace OffersHub.Web.Models.ViewModels
 
         public IFormFile? ImageFile { get; set; }
     }
-
 }

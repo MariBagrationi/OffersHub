@@ -56,17 +56,19 @@ namespace OffersHub.Web.Controllers
 
                 TempData["WelcomeMessage"] = $"Welcome, {user.UserName}! You are logged in as {user.Role}.";
 
-                switch (user.Role.ToLower())
-                {
-                    case "admin":
-                        return RedirectToAction("AdminDashboard", "Home");
-                    case "company":
-                        return RedirectToAction("CompanyDashboard", "Company");
-                    case "client":
-                        return RedirectToAction("ClientDashboard", "Client");
-                    default:
-                        return RedirectToAction("Index", "Home");
-                }
+                return RedirectToAction("Index", "Home");
+
+                //switch (user.Role.ToLower())
+                //{
+                //    case "admin":
+                //        return RedirectToAction("AdminDashboard", "Home");
+                //    case "company":
+                //        return RedirectToAction("CompanyDashboard", "Home");
+                //    case "client":
+                //        return RedirectToAction("ClientDashboard", "Home");
+                //    default:
+                //        return RedirectToAction("Index", "Home");
+                //}
             }
             catch (Exception ex)
             {
@@ -74,7 +76,6 @@ namespace OffersHub.Web.Controllers
                 return View(model);
             }
         }
-
 
         [HttpGet]
         public IActionResult Register()

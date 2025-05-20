@@ -53,6 +53,11 @@ namespace OffersHub.Infrastructure
             return await base.GetAsync(new object[] { id }, cancellationToken).ConfigureAwait(false);
         }
 
+        public async Task<Client?> GetByUserName(string userName, CancellationToken cancellationToken)
+        {
+            return await base.FindAsync(x => x.UserName == userName, cancellationToken).ConfigureAwait(false);
+        }
+
         public new Client Update(Client client)
         {
             base.Update(client);

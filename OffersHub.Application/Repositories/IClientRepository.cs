@@ -9,6 +9,7 @@ namespace OffersHub.Application.Repositories
         IQueryable<Client> GetAll();
         Task<Client?> GetById(int id, CancellationToken cancellationToken);
         Task<Client?> Get(Client client, CancellationToken cancellationToken);
+        Task<Client?> GetByUserName(string userName, CancellationToken cancellationToken);
         Task<Client> Create(Client client, CancellationToken cancellationToken);
         Client Update(Client client);
         void Delete(Client client);

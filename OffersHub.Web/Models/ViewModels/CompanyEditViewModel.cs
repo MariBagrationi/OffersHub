@@ -15,5 +15,4 @@ namespace OffersHub.Web.Models.ViewModels
         [Required(ErrorMessage = "Company image is required.")]
         public IFormFile? ImageFile { get; set; }
     }
-
 }

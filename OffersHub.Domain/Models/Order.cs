@@ -4,7 +4,7 @@ namespace OffersHub.Domain.Models
     public class Order
     {
         public int Id { get; set; }
-        public string UserName { get; set; } = string.Empty; // The client who placed the order
+        public string UserName { get; set; } = string.Empty; 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public OrderStatus Status { get; set; } = OrderStatus.Pending;
         public bool IsDeleted { get; set; } = false;

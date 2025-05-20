@@ -34,7 +34,7 @@
                     <td>@offer.CategoryName</td>
                     <td>@offer.CompanyName</td>
                     <td>@offer.OfferDueDate.ToString("d")</td>
-                    <td>@(offer.Price * offer.Quantity).ToString("C")</td>
+                    <td>@(offer.Price).ToString("C")</td>
                     <td>
                         <form method="post" asp-controller="Purchase" asp-action="RemoveFromCart" asp-route-productId="@offer.Id">
                             <button type="submit" class="btn btn-danger">Remove</button>
@@ -47,7 +47,7 @@
     </table>
 
     <div class="cart-summary">
-        <h4>Total: @Model.Sum(o => o.Price * o.Quantity).ToString("C")</h4>
+        <h4>Total: @Model.Sum(o => o.Price).ToString("C")</h4>
 
         <form asp-controller="Purchase" asp-action="BuyCart" method="post">
             <button type="submit" class="btn btn-primary">Proceed to Checkout</button>

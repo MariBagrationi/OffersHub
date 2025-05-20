@@ -41,10 +41,9 @@
 
                         if (company != null)
                         {
-                            profileUrl = Url.Action("CompanyDashboard", "Home", new { id = company.Id })!;
+                            profileUrl = Url.Action("CompanyDashboard", "Home", new { Id = company.Id })!;
                         }
                     }
-                    
                 }
 
                 <a href="@profileUrl" class="btn btn-back-to-profile shadow-lg me-2">

@@ -17,7 +17,6 @@ namespace OffersHub.Application.Services.Clients
         Task<bool> AddToCart(int productId, string userName, CancellationToken cancellationToken);
         Task<bool> RemoveFromCart(int productId, string userName, CancellationToken cancellationToken);
         Task<bool> BuyCart(string userName, CancellationToken cancellationToken);
-
         Task<IEnumerable<OfferResponseModel>> GetCart(int clientid, CancellationToken cancellationToken);
 
     }

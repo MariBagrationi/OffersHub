@@ -1,7 +1,9 @@
-using Microsoft.AspNetCore.Authorization;
+using Mapster;
 using Microsoft.AspNetCore.Mvc;
+using OffersHub.Application.Repositories;
 using OffersHub.Application.Services.Clients;
 using OffersHub.Web.Models;
+using OffersHub.Web.Models.ViewModels;
 using System.Diagnostics;
 
 namespace OffersHub.Web.Controllers
@@ -10,11 +12,13 @@ namespace OffersHub.Web.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IClientService _clientService;
+        private readonly ICompanyRepository _companyRepository;
 
-        public HomeController(ILogger<HomeController> logger, IClientService clientService)
+        public HomeController(ILogger<HomeController> logger, IClientService clientService, ICompanyRepository companyRepository)
         {
             _logger = logger;
             _clientService = clientService;
+            _companyRepository = companyRepository;
         }
 
         public IActionResult Index()
@@ -27,14 +31,23 @@ namespace OffersHub.Web.Controllers
             return View();
         }
 
-        public IActionResult CompanyDashboard()
+        public async Task<IActionResult> CompanyDashboard(int id)
         {
-            return View();
+            var company = await _companyRepository.GetById(id, CancellationToken.None);
+            if (company == null)
+            {
+                return NotFound(); 
+            }
+            return View(company.Adapt<CompanyDashboardViewModel>());
         }
 
         public async Task<IActionResult> ClientDashboard(int id)
         {
-            var client = await _clientService.GetById(id, CancellationToken.None);  
+            var client = await _clientService.GetById(id, CancellationToken.None);
+            if (client == null)
+            {
+                return NotFound(); 
+            }
             return View(client);
         }
 

@@ -124,8 +124,8 @@ namespace OffersHub.Web.Controllers
 
             var model = new CompanyDashboardViewModel
             {
-                CompanyId = company.Id,
-                CompanyName = company.Name,
+                Id = company.Id,
+                Name = company.Name,
                 UserName = company.UserName,
                 Image = company.Image
             };

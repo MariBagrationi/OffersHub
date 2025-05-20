@@ -27,13 +27,27 @@
             <tbody>
                 @foreach (var order in Model)
                 {
+                    var timeSinceCreated = DateTime.UtcNow - order.CreatedAt;
+                    bool canCancel = timeSinceCreated.TotalMinutes < 10 && order.Status == "Pending";   
                     <tr>
                         <td>@order.Id</td>
                         <td>@order.CreatedAt.ToString("MM/dd/yyyy")</td>
                         <td>@order.TotalPrice</td>
                         <td>@order.Status</td>
-                        
-                    </tr>
+                        <td>
+                            @if (canCancel)
+                            {
+                                <form asp-action="CancelOrder" asp-controller="Purchase" method="post" asp-route-orderId="@order.Id">
+                                    <input type="hidden" name="orderId" value="@order.Id" />
+                                    <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <span class="text-muted">Not cancelable</span>
+                            }
+                        </td>
+                   </tr>
                 }
             </tbody>
         </table>

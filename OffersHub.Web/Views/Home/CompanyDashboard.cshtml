@@ -1,18 +1,42 @@
-﻿@{
+﻿@model OffersHub.Web.Models.ViewModels.CompanyDashboardViewModel
+
+@{
     ViewData["Title"] = "Company Dashboard";
 }
 
 <div class="container mt-5">
     <div class="text-center">
-        <h1 class="display-4 text-success fw-bold">Welcome, Company 🌟</h1>
+        <div class="my-4">
+            <img src="@Url.Content($"~/images/{Model.Image}" ?? "~/images/default-profile.jpg")"
+                 alt="Profile Image"
+                 class="rounded-circle shadow"
+                 style="width: 300px; height: 300px; object-fit: cover;" />
+        </div>
+
+        <h1 class="display-4 text-success fw-bold">Welcome, @Model.Name 🌟</h1>
         <p class="lead">Manage your offers, company profile, and track client interest.</p>
+
 
         <hr class="my-4" />
 
         <div class="d-flex flex-wrap justify-content-center gap-4">
-            <a asp-controller="Offer" asp-action="Createoffer" class="btn btn-success btn-lg">Add New Offer</a>
-            <a asp-controller="Offer" asp-action="GetMyOffers" asp-route-companyId="@ViewBag.CompanyId" class="btn btn-outline-success btn-lg">My Offers</a>
-            <a asp-controller="Company" asp-action="Edit" asp-route-username="@User.Identity!.Name" class="btn btn-outline-dark btn-lg">Edit Company Info</a>
+
+            @if (Model.IsActive)
+            {
+                <a asp-controller="Offer" asp-action="CreateOffer" class="btn btn-success btn-lg">➕ Add New Offer</a>
+            }
+
+            <a asp-controller="Offer" asp-action="GetMyOffers" asp-route-companyId="@Model.Id" class="btn btn-outline-success btn-lg">📦 My Offers</a>
+
+            <a asp-controller="Company" asp-action="Edit" asp-route-username="@Model.UserName" class="btn btn-outline-dark btn-lg">✏️ Edit Company Info</a>
         </div>
+
+        <div class="mt-5">
+            <span class="badge bg-@(Model.IsActive ? "success" : "danger") fs-5 px-4 py-2">
+                @(Model.IsActive ? "Active" : "Inactive")
+            </span>
+        </div>
+
     </div>
 </div>
+

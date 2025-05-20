@@ -9,7 +9,7 @@ namespace OffersHub.Application.Services.Orders
         Task<PagedResult<OrderServiceModel>> GetAllPaged(int pageNumber, int pageSize, CancellationToken cancellationToken);
         Task<OrderServiceModel> GetOrderById(int orderId, CancellationToken cancellationToken);
         Task<bool> ChangeOrderStatus(int orderId, string status, CancellationToken cancellationToken); // accesible for company only
+        Task<bool> CancelOrder(int orderId, CancellationToken cancellationToken); // accesible for client only
 
-        //Deactivate within - 5 min
     }
 }

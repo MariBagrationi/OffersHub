@@ -13,18 +13,59 @@ namespace OffersHub.Application.Services.Orders
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IUnitOfWork _unitOfWork;
-        public OrderService(IOrderRepository orderRepository, IUnitOfWork unitOfWork)
+        private readonly IOfferRepository _offerRepository;
+        private readonly IClientRepository _clientRepository;
+        public OrderService(IOrderRepository orderRepository, IUnitOfWork unitOfWork, IOfferRepository offerRepository, IClientRepository clientRepository)
         {
             _orderRepository = orderRepository;
             _unitOfWork = unitOfWork;
+            _offerRepository = offerRepository;
+            _clientRepository = clientRepository;
         }
+
+        public async Task<bool> CancelOrder(int orderId, CancellationToken cancellationToken)
+        {
+            var order = await _orderRepository.GetOrderById(orderId, cancellationToken).ConfigureAwait(false);
+            if (order == null)
+                throw new OrderDoesNotExist("Order with such id, does not exist");
+
+            if (order.Status == OrderStatus.Pending && DateTime.UtcNow - order.CreatedAt < TimeSpan.FromMinutes(10))
+            {
+               await using var transaction = await _unitOfWork.BeginTransactionAsync(cancellationToken);
+
+               try
+               {
+                    order.Status = OrderStatus.Canceled;
+                    string client = order.UserName;
+                    var clientEntity = await _clientRepository.GetByUserName(client, cancellationToken).ConfigureAwait(false);
+                    clientEntity!.Orders.Remove(order);
+                    foreach (var item in order.Items)
+                    {
+                        var offer = await _offerRepository.Get(item.OfferId, cancellationToken).ConfigureAwait(false);
+                        _offerRepository.Attach(offer!);
+                        offer!.Status = OfferStatus.InProgress;
+                        offer.Quantity += item.Quantity;
+                    }
+                    await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+                    await transaction.CommitAsync(cancellationToken).ConfigureAwait(false);
+                    return true;
+                }
+                catch
+                {
+                    await transaction.RollbackAsync(cancellationToken).ConfigureAwait(false);
+                    return false;
+                }
+               
+            }
+            return false;
+        }
+
         public async Task<bool> ChangeOrderStatus(int orderId, string status, CancellationToken cancellationToken)
         {
             var order = await _orderRepository.GetOrderById(orderId, cancellationToken).ConfigureAwait(false);
             if (order == null)
                 throw new OrderDoesNotExist("Order with such id, does not exist");
 
-            //check status
             order!.Status = (OrderStatus)Enum.Parse(typeof(OrderStatus), status); //tryparse
             await _unitOfWork.SaveChangesAsync(cancellationToken);
             return true;

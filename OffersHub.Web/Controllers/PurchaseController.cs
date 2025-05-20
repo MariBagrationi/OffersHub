@@ -24,7 +24,7 @@ namespace OffersHub.Web.Controllers
             _orderService = orderService;
         }
 
-        [HttpPost("{offerId}")]
+        [HttpPost("AddToChart/{offerId}")]
         public async Task<IActionResult> AddToCart(int offerId, CancellationToken cancellationToken)
         {
             var userName = User.Identity?.Name!;
@@ -66,6 +66,17 @@ namespace OffersHub.Web.Controllers
 
             if (!result)
                 return BadRequest("Purchase failed.");
+
+            return RedirectToAction("MyOrders");
+        }
+
+        [HttpPost("CancelOrder/{orderId}")]
+        public async Task<IActionResult> cancelOrder(int orderId, CancellationToken cancellationToken)
+        {
+            var result = await _orderService.CancelOrder(orderId, cancellationToken).ConfigureAwait(true);
+
+            if (!result)
+                return BadRequest("Failed to cancel order.");
 
             return RedirectToAction("MyOrders");
         }
