@@ -33,7 +33,6 @@ namespace OffersHub.Persistance.Seed
 
         private static async Task SeedDataAsync(OffersHubContext context)
         {
-            //bool usersSeeded = await SeedUsersAsync(context);
             bool adminsSeeded = await SeedAdminsAsync(context);
 
             if (adminsSeeded)
@@ -63,6 +62,5 @@ namespace OffersHub.Persistance.Seed
             }
             return false;
         }
-
     }
 }

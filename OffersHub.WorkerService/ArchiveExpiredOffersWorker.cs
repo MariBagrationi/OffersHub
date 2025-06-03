@@ -9,17 +9,12 @@ namespace OffersHub.WorkerService
     {
         private readonly ILogger<ArchiveExpiredOffersWorker> _logger;
         private readonly IServiceScopeFactory _serviceScopeFactory;
-        //private readonly IOfferRepository _offerRepository;
-        //private readonly IUnitOfWork _unitOfWork;
+    
         public ArchiveExpiredOffersWorker(ILogger<ArchiveExpiredOffersWorker> logger,
             IServiceScopeFactory serviceScopeFactory)
-                                          //IOfferRepository offerRepository,
-                                          //IUnitOfWork unitOfWork)
         {
             _logger = logger;
             _serviceScopeFactory = serviceScopeFactory;
-            //_offerRepository = offerRepository;
-            //_unitOfWork = unitOfWork;
         }
 
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)

@@ -18,7 +18,7 @@ namespace OffersHub.Persistance.Configurations
             builder.HasOne(oi => oi.Offer)
                    .WithMany()
                    .HasForeignKey(oi => oi.OfferId)
-                   .OnDelete(DeleteBehavior.Restrict); // Prevents product deletion if referenced in orders
+                   .OnDelete(DeleteBehavior.Restrict); 
 
             builder.Property(oi => oi.Quantity)
                    .IsRequired();

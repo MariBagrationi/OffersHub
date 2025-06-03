@@ -36,7 +36,7 @@ namespace OffersHub.Application.Services.Companies
         public async Task<CompanyResponseModel> Create(CompanyRequestModel company, CancellationToken cancellationToken)
         {
             var entity = await _companyRepository.Get(company.UserName, cancellationToken).ConfigureAwait(false);
-            //bool exists = await _companyRepository.Exists(x => x.User.UserName == company.UserName, cancellationToken).ConfigureAwait(false);
+         
             if (entity != null)
                 throw new CompanyAlreadyExist("Company with such user name already exists");
 
